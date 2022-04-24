@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CurrentWeather, :vcr do
+RSpec.describe CurrentWeather do
   before :each do
     lat = 34.850746
     lon = -82.398964

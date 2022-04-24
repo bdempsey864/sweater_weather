@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe WeatherFacade, :vcr do
+RSpec.describe WeatherFacade do
   describe 'weather data' do
     it 'has weather data' do
       lat = 34.850746

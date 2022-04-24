@@ -9,7 +9,7 @@ class WeatherFacade
   end
 
   def self.hourly(response)
-    response[:hourly].map do |hour| 
+    response[:hourly].map do |hour|
       HourlyWeather.new(hour)
     end
   end

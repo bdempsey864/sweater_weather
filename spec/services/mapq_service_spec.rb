@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe MapqService, :vcr do
+RSpec.describe MapqService do
   describe 'coordinates' do
     it 'can find lat and lon' do
       location = 'greenville, sc'
