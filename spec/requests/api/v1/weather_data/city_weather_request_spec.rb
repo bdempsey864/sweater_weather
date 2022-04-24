@@ -29,4 +29,26 @@ RSpec.describe "weather data for a city" do
       expect(result[:data][:attributes][:daily_weather].count).to eq(5)
     end
   end
+
+  describe 'sad paths' do
+    it 'returns bad request status if no location is given' do
+      get '/api/v1/forecast?location='
+
+      expect(response.status).to eq(400)
+
+      result = JSON.parse(response.body, symbolize_names: true)
+
+      expect(result[:errors]).to eq('City and state is required')
+    end
+
+    it 'returns bad request status if no location is given' do
+      get '/api/v1/forecast?'
+
+      expect(response.status).to eq(400)
+
+      result = JSON.parse(response.body, symbolize_names: true)
+
+      expect(result[:errors]).to eq('City and state is required')
+    end
+  end
 end
