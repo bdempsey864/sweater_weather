@@ -7,14 +7,14 @@ class ForecastSerializer
       type: 'forecast', 
       attributes: 
       {
-        current_weather: current,
+        current_weather: current.serialize,
         hourly_weather:
           hourly.map do |hour|
-            hour
+            hour.serialize
           end,
         daily_weather:
           daily.map do |day|
-            day
+            day.serialize
           end
       }
     }
