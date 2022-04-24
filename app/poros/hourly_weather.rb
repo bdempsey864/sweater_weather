@@ -5,9 +5,18 @@ class HourlyWeather
               :icon
 
   def initialize(data)
-    @time = Time.at(data[:dt]).strftime("%H:%M:%S")
+    @time = Time.at(data[:dt])
     @temperature = data[:temp]
     @conditions = data[:weather][0][:description]
     @icon = data[:weather][0][:icon]
+  end
+
+  def serialize
+    {
+      time: @time.strftime('%T'),
+      temperature: @temperature,
+      conditions: @conditions,
+      icon: @icon
+    }
   end
 end

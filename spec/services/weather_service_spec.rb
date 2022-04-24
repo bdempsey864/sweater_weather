@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe WeatherService, :vcr do
+RSpec.describe WeatherService do
   describe 'weather data' do
     it 'has weather data; current, hourly, daily' do
       lat = 34.850746

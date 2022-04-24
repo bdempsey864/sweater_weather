@@ -21,4 +21,19 @@ class CurrentWeather
     @conditions = data[:current][:weather][0][:description]
     @icon = data[:current][:weather][0][:icon]
   end
+
+  def serialize
+    {
+      datetime: @datetime.to_s,
+      sunrise: @sunrise.to_s,
+      sunset: @sunset.to_s,
+      temperature: @temperature,
+      feels_like: @feels_like,
+      humidity: @humidity,
+      uvi: @uvi,
+      visibility: @visibility,
+      conditions: @conditions,
+      icon: @icon
+    }
+  end
 end
