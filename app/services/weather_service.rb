@@ -1,7 +1,8 @@
 class WeatherService
   def self.conn
-    Faraday.new(url: 'https://api.openweathermap.org') do |req|
-      req.params['appid'] = ENV['weather_key']
+    Faraday.new(url: 'https://api.openweathermap.org') do |request|
+      request.headers['Content-Type'] = 'application/json'
+      request.params['appid'] = ENV['weather_key']
     end
   end
 
