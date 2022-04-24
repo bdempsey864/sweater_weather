@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MapqFacade do
+RSpec.describe MapqFacade, :vcr do
   describe 'coordinates' do
     it 'can find lat and lon' do
       location = 'greenville, sc'

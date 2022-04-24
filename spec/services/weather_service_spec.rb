@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe WeatherService do
+RSpec.describe WeatherService, :vcr do
   describe 'weather data' do
     it 'has weather data; current, hourly, daily' do
       lat = 34.850746
@@ -26,6 +26,9 @@ RSpec.describe WeatherService do
       expect(response).to have_key(:daily)
       expect(response[:daily]).to be_an Array
       expect(response[:daily][0]).to be_a Hash
+
+      expect(response.has_key?(:minutely)).to eq(false)
+      expect(response.has_key?(:alerts)).to eq(false)
     end
   end
 end
