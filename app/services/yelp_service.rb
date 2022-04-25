@@ -6,7 +6,7 @@ class YelpService
   end
 
   def self.food_search(food, location)
-    response = conn.get("/v3/businesses/search?term=#{food}&location=#{location}")
+    response = conn.get("/v3/businesses/search?categories=#{food}&location=#{location}")
     JSON.parse(response.body, symbolize_names: true)
   end
 end

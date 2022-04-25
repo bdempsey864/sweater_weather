@@ -1,3 +1,5 @@
 class Api::V1::YelpController < ApplicationController
-  before_action :authenticate
+  def index
+    
+  end
 end
