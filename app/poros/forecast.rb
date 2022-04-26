@@ -3,8 +3,8 @@ class Forecast
               :temperature
 
   def initialize(data)
-    @summary = data[:current][:weather][0][:description]
-    @temperature = @temperature = data[:current][:temp]
+    @summary = data[0].conditions
+    @temperature = data[0].temperature
   end
 
   def serialize

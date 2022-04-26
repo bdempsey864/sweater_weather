@@ -4,10 +4,12 @@ RSpec.describe Brewery do
   it 'can make a Brewery' do
     location = 'denver,co'
     quantity = 5
-    response = BreweryFacade.find_brewery(location).first
+    data, forecast, breweries= BreweryFacade.find_brewery(location, quantity)
 
-    expect(response.first).to be_a Brewery 
-    expect(response.first[:name]).to be_a String 
-    expect(response.first[:city]).to be_a String 
+    expect(breweries).to be_an Array 
+    expect(breweries.first).to be_a Brewery
+    expect(breweries.first.name).to be_a String 
+    expect(breweries.first.destination).to be_a String 
+    expect(breweries.count).to eq(5)
   end
 end

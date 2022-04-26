@@ -5,7 +5,7 @@ RSpec.describe 'brewery facade' do
     it 'can find brewery and forecast data' do
       location = 'denver,co'
       quantity = 5
-      response = BreweryFacade.find_brewery(location)
+      response = BreweryFacade.find_brewery(location, quantity)
       limit = response.take(quantity)
 
       expect(response).to be_an Array

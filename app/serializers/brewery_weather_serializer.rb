@@ -4,7 +4,7 @@ class BreweryWeatherSerializer
       data: 
       {
         id: nil,
-        type: breweries,
+        type: "breweries",
         attributes: {
           destination: data[0][:city],
           forecast: forecast.serialize,

@@ -1,7 +1,7 @@
 class BreweryFacade
-  def self.find_brewery(location)
+  def self.find_brewery(location, quantity)
     data = BreweryService.find_brewery(location)
-    return data, forecast(location), breweries(data)
+    return data, forecast(location), breweries(data, quantity)
   end
 
   def self.forecast(location)
@@ -10,8 +10,8 @@ class BreweryFacade
     Forecast.new(weather)
   end
 
-  def self.breweries(data)
-    data.each do |d|
+  def self.breweries(data, quantity)
+    data.take(quantity.to_i).map do |d|
       Brewery.new(d)
     end
   end
