@@ -10,11 +10,7 @@ RSpec.describe BreweryService do
       expect(response).to be_an Array
       expect(response[0]).to have_key(:name)
       expect(response[0]).to have_key(:city)
-
-      limit = response.take(quantity)
-      
-      expect(response.count).to eq(limit.count)
-
+      expect(response.take(quantity).count).to eq(5)
     end
   end
 end

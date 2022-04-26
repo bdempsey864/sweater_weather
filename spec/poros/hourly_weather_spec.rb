@@ -14,7 +14,6 @@ RSpec.describe HourlyWeather do
     expect(@hour_object.time).to be_a(Time)
     expect(@hour_object.conditions).to be_a(String)
     expect(@hour_object.icon).to be_a(String)
-    expect(@hour_object.temperature).to be_a(Float)
   end
 
   it 'can serialize' do
