@@ -10,4 +10,9 @@ class MapqService
     response = conn.get("/geocoding/v1/address?location=#{location}")
     JSON.parse(response.body, symbolize_names: true)
   end
+
+  def self.directions(start, destination)
+    response = conn.get("/directions/v2/route?key=#{ENV['mapq_key']}&from=#{start}&to=#{destination}")
+    JSON.parse(response.body, symbolize_names: true)
+  end
 end
