@@ -12,4 +12,26 @@ RSpec.describe MapqFacade, :vcr do
       expect(response.last).to be_a Float 
     end
   end
+
+  describe 'route' do
+    it 'finds travel time for route' do
+      from = 'greenville,sc'
+      to = 'asheville,nc'
+
+      response = MapqFacade.route(from, to)
+
+      expect(response).to be_a(String)
+      expect(response).to_not eq('impossible')
+    end
+
+    it 'returns error if route is not possible' do
+      from = 'greenville,sc'
+      to = 'paris,fr'
+
+      response = MapqFacade.route(from, to)
+
+      expect(response).to be_a(String)
+      expect(response).to eq('impossible')
+    end
+  end
 end

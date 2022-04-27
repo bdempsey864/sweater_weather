@@ -19,4 +19,10 @@ class WeatherFacade
       DailyWeather.new(day)
     end
   end  
+
+  def self.destination_weather(lat, lon, trip_time)
+    response = WeatherService.destination_weather(lat, lon)
+    data = response[:hourly][trip_time - 1]
+    DestinationWeather.new(data)
+  end
 end
