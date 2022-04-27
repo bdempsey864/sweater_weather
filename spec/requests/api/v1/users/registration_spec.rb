@@ -9,7 +9,7 @@ RSpec.describe 'user registration' do
       password: 'newpassword',
       password_confirmation: 'newpassword'
     }.to_json
-
+    
     # passwords not matching
     @user_params_2 = {
       email: Faker::Internet.email,
