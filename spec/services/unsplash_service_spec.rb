@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UnsplashService, :vcr do
   describe 'picture' do
+    
     it 'can connect to unsplash service and return a data hash' do
       location = 'greenville,sc'
       response = UnsplashService.picture(location)

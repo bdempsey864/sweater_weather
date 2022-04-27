@@ -2,6 +2,62 @@
 http_interactions:
 - request:
     method: get
+    uri: http://www.mapquestapi.com/geocoding/v1/address?key=PkwmN9v6675Ohlmwolh6OO4dpYgMXovi&location=greenville,%20sc
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v2.2.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Wed, 27 Apr 2022 03:06:42 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '1040'
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET,POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - no-cache, must-revalidate
+      Expires:
+      - Mon, 20 Dec 1998 01:00:00 GMT
+      Geocodetransactioncount:
+      - '1'
+      Last-Modified:
+      - Wed, 27 Apr 2022 03:06:42 GMT
+      Pragma:
+      - no-cache
+      Reversegeocodetransactioncount:
+      - '0'
+      Set-Cookie:
+      - JSESSIONID=ABF23F5770407DAC7CD38A196D282626; Path=/; HttpOnly
+      Status:
+      - success
+      Transactionweight:
+      - '1.0'
+    body:
+      encoding: UTF-8
+      string: '{"info":{"statuscode":0,"copyright":{"text":"\u00A9 2022 MapQuest,
+        Inc.","imageUrl":"http://api.mqcdn.com/res/mqlogo.gif","imageAltText":"\u00A9
+        2022 MapQuest, Inc."},"messages":[]},"options":{"maxResults":-1,"thumbMaps":true,"ignoreLatLngInput":false},"results":[{"providedLocation":{"location":"greenville,
+        sc"},"locations":[{"street":"","adminArea6":"","adminArea6Type":"Neighborhood","adminArea5":"Greenville","adminArea5Type":"City","adminArea4":"Greenville
+        County","adminArea4Type":"County","adminArea3":"SC","adminArea3Type":"State","adminArea1":"US","adminArea1Type":"Country","postalCode":"","geocodeQualityCode":"A5XAX","geocodeQuality":"CITY","dragPoint":false,"sideOfStreet":"N","linkId":"282036974","unknownInput":"","type":"s","latLng":{"lat":34.850746,"lng":-82.398964},"displayLatLng":{"lat":34.850746,"lng":-82.398964},"mapUrl":"http://www.mapquestapi.com/staticmap/v5/map?key=PkwmN9v6675Ohlmwolh6OO4dpYgMXovi&type=map&size=225,160&locations=34.850746,-82.398964|marker-sm-50318A-1&scalebar=true&zoom=12&rand=80355084"}]}]}'
+  recorded_at: Wed, 27 Apr 2022 03:06:42 GMT
+- request:
+    method: get
     uri: https://api.openweathermap.org/data/2.5/onecall?appid=d07b92c47feac09efe17ba2be0174722&exclude=minutely,alerts&lat=34.850746&lon=-82.398964&units=imperial
     body:
       encoding: US-ASCII
@@ -23,7 +79,7 @@ http_interactions:
       Server:
       - openresty
       Date:
-      - Wed, 27 Apr 2022 03:06:42 GMT
+      - Wed, 27 Apr 2022 03:06:43 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -98,5 +154,5 @@ http_interactions:
         rain","icon":"10d"}],"clouds":100,"pop":0.87,"rain":2.9,"uvi":0},{"dt":1651510800,"sunrise":1651487873,"sunset":1651536906,"moonrise":1651491600,"moonset":1651544160,"moon_phase":0.06,"temp":{"day":75.06,"min":58.03,"max":75.06,"night":63.21,"eve":66.58,"morn":60.69},"feels_like":{"day":75.51,"night":63.75,"eve":67.26,"morn":60.98},"pressure":1018,"humidity":69,"dew_point":64.06,"wind_speed":8.23,"wind_deg":217,"wind_gust":13.71,"weather":[{"id":501,"main":"Rain","description":"moderate
         rain","icon":"10d"}],"clouds":99,"pop":1,"rain":13.48,"uvi":0},{"dt":1651597200,"sunrise":1651574212,"sunset":1651623356,"moonrise":1651580160,"moonset":1651634100,"moon_phase":0.09,"temp":{"day":75.22,"min":61.65,"max":75.22,"night":63.99,"eve":64.69,"morn":63.09},"feels_like":{"day":75.63,"night":64.6,"eve":65.37,"morn":63.66},"pressure":1015,"humidity":68,"dew_point":63.77,"wind_speed":14.58,"wind_deg":235,"wind_gust":31.12,"weather":[{"id":500,"main":"Rain","description":"light
         rain","icon":"10d"}],"clouds":98,"pop":0.98,"rain":8.61,"uvi":0}]}'
-  recorded_at: Wed, 27 Apr 2022 03:06:42 GMT
+  recorded_at: Wed, 27 Apr 2022 03:06:43 GMT
 recorded_with: VCR 6.1.0
