@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UnsplashFacade do
+RSpec.describe UnsplashFacade, :vcr do
   describe 'picture' do
     it 'has image data' do
       location = 'greenville, sc'
