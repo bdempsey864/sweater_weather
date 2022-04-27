@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe HourlyWeather do
+RSpec.describe HourlyWeather, :vcr do
   before :each do
     lat = 34.850746
     lon = -82.398964

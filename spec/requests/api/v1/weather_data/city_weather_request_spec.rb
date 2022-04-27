@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "weather data for a city" do
+RSpec.describe "weather data for a city", :vcr do
   describe "happy paths" do
     it 'returns weather data for a city' do
       location = 'greenville, sc'
