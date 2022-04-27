@@ -1,6 +1,8 @@
 class User < ApplicationRecord
-  has_many :api_keys, as: :bearer 
+  before_save { email.downcase! }
+  after_save :create_api_key
 
+  has_many :api_keys, as: :bearer 
   validates :email, presence: true
   validates :email, format: /@/
   # validates :email, presence: true
@@ -8,4 +10,9 @@ class User < ApplicationRecord
   validates :password, presence: true
 
   has_secure_password
+
+  private
+  def create_api_key
+    self.api_keys.create!(token: SecureRandom.hex)
+  end
 end

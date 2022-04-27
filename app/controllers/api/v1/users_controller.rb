@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApplicationController
       end
     else
       render json: { error: 'Please send email and matching password and password_confirmation' }, 
-            status: :unprocessable_entity
+      status: :unprocessable_entity
     end
   end
 
