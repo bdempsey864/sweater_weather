@@ -15,4 +15,14 @@ class WeatherService
     end
     JSON.parse(response.body, symbolize_names: true)
   end
+
+  def self.destination_weather(lat, lon)
+    response = conn.get('/data/2.5/onecall') do |request|
+      request.params['lat'] = lat
+      request.params['lon'] = lon
+      request.params['units'] = 'imperial'
+      request.params['exclude'] = 'current,daily,minutely,alerts'
+    end
+    JSON.parse(response.body, symbolize_names: true)
+  end
 end

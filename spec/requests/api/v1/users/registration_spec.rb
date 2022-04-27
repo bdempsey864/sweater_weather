@@ -9,7 +9,7 @@ RSpec.describe 'user registration' do
       password: 'newpassword',
       password_confirmation: 'newpassword'
     }.to_json
-    
+
     # passwords not matching
     @user_params_2 = {
       email: Faker::Internet.email,
@@ -76,11 +76,11 @@ RSpec.describe 'user registration' do
       expect(result[:errors]).to eq(["Email can't be blank", 'Email is invalid'])
     end
 
-    it 'returns error if invalid json payload' do
+   it 'returns error if invalid json payload' do
       expect { post '/api/v1/users', params: @user_params_1 }.to change(User, :count).by(0)
       expect(response.status).to eq(400)
       result = JSON.parse(response.body, symbolize_names: true)
-      expect(result[:error]).to eq('Json content type required')
+      expect(result[:errors]).to eq('Json content type required')
     end
   end
 end
