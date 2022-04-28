@@ -35,7 +35,7 @@ spec/poros/forecast_spec.rb
 7. run ```rails s``` to launch the production environment
 8. send requests to "https://localhost:3000". 
 
-I reccomend using Postman for the requests, as it's easy to format a request by adding it to the "raw body" of a 
+I recomend using Postman for the requests, as it's easy to format a request by adding it to the "raw body" of a 
 POST request. 
 ```
 hot tip: all post requests need to be sent with the JSON raw body!
@@ -85,7 +85,7 @@ Response:
         "id": "2",
         "type": "users",
         "attributes": {
-            "email": "sam@example.com",
+            "email": "you@example.com",
             "api_key": "8a232e734270e093e960"
         }
     }
