@@ -1,134 +1,396 @@
-# Sweater Weather 
-> A rails backend for a service oriented application. A user can request and receieve data from endpoints to plan road trips. Endpoints include querying weather forecasts for a destination, drive time between two destinations, and background image resources for the front end. 
-Multiple API endpoints are consumed for each call, their data is integrated into the JSON body of sweater-weather's response. 
-## Schema
-```
-   create_table "api_keys", force: :cascade do |t|
-    t.integer "bearer_id", null: false
-    t.string "bearer_type", null: false
-    t.string "token", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bearer_id", "bearer_type"], name: "index_api_keys_on_bearer_id_and_bearer_type"
-    t.index ["token"], name: "index_api_keys_on_token", unique: true
-  end
+# Weather-Sweater
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "password_digest", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-  end
-```
+## Table of contents
+- [Overview](#overview)
+- [Endpoints](#endpoints)
+- [APIs](#apis)
+- [Setup](#setup)
+- [Endpoints](#endpoints)
+- [Technologies](#technologies)
+- [Contact me](#contact_me)
 
-## Design Principles: 
-The design of this application relies on the facade design pattern. Here's a very high level overview: 
-* A controller receives a request from the front end and intiates the creation of a facade, and passes it data(params, from JSON or query). 
-* A facade is a ruby class that initializes a Service, and sends the service data to a PORO. 
-* A service calls an external api enpoint(get (https://web.site?optional_param) and returns parsed JSON. 
-* The parsed JSON is turned into a Ruby object through a PORO. 
-* The object is serialized and sent to the route matching the controller action. 
+### Overview
 
+This project is the backend of a hypothetical service-oriented project that allows users to make various searches about weather and locations, in addition to planning a trip. A number of working endpoints are listed below.
 
-```
-spec/poros/forecast_spec.rb
-```
+### APIs
 
-## Setup
+The following are a list of APIs used:
 
-1. clone this repository 
-2. cd into 'sweater-weather' directory 
-3. run ```'bundle install' to install gems```
-4. run ```rake db:{drop,create,migrate} to prepare the database ```
-6. run ```bundle exec rspec``` to run the test suite
-7. run ```rails s``` to launch the production environment
-8. send requests to "https://localhost:3000". 
+[MapQuest Geocoding API](https://developer.mapquest.com/documentation/geocoding-api/)
 
-I recomend using Postman for the requests, as it's easy to format a request by adding it to the "raw body" of a 
-POST request. 
-```
-hot tip: all post requests need to be sent with the JSON raw body!
-```
+[MapQuest Directions API](https://developer.mapquest.com/documentation/directions-api/)
 
+[OpenWeather One Call API](https://openweathermap.org/api/one-call-api)
 
-### GET http://localhost:3000/api/v1/forecast?location=denver,co&Content-Type=application/json&Accept
-```
-Condensed Response: 
-{"data":
-  {"id":"null",
-    "type":"forecast",
-    "attributes":
-      {"current_weather":
-        {"datetime":"2022-04-26T13:47:35.000-06:00","sunrise":"2022-04-26T06:06:38.000-06:00","sunset":"2022-04-26T19:48:30.000-06:00","temperature":72.3,"feels_like":69.8,"humidity":12,"uvi":8.2,"visibility":10000,"conditions":null,"icon":"04d"},
-         "daily_weather":
-         [{"date":"2022-04-26","sunrise":"2022-04-26T06:06:38.000-06:00","sunset":"2022-04-26T19:48:30.000-06:00","max_temp":72.34,"min_temp":43.52,"conditions":"broken clouds","icon":"04d"},{"date":"2022-04-27","sunrise":"2022-04-27T06:05:20.000-06:00","sunset":"2022-04-27T19:49:30.000-06:00","max_temp":73.35,"min_temp":53.29,"conditions":"light rain","icon":"10d"},
-         {"date":"2022-04-28","sunrise":"2022-04-28T06:04:02.000-06:00","sunset":"2022-04-28T19:50:31.000-06:00","max_temp":75.58,"min_temp":52.59,"conditions":"overcast clouds","icon":"04d"},{"date":"2022-04-29","sunrise":"2022-04-29T06:02:46.000-06:00","sunset":"2022-04-29T19:51:32.000-06:00","max_temp":61.54,"min_temp":51.82,"conditions":"scattered clouds","icon":"03d"},
-         {"date":"2022-04-30","sunrise":"2022-04-30T06:01:31.000-06:00","sunset":"2022-04-30T19:52:33.000-06:00","max_temp":66.78,"min_temp":47.16,"conditions":"clear sky","icon":"01d"}],
-       "hourly_weather":
-          [{"time":"13:00:00","temperature":71.6,"conditions":"broken clouds","icon":"04d"},
-          {"time":"14:00:00","temperature":72.3,"conditions":"broken clouds","icon":"04d"},
-          {"time":"15:00:00","temperature":72.34,"conditions":"broken clouds","icon":"04d"},
-          {"time":"16:00:00","temperature":72.27,"conditions":"broken clouds","icon":"04d"},
-          {"time":"17:00:00","temperature":71.94,"conditions":"broken clouds","icon":"04d"},
-          {"time":"18:00:00","temperature":72.27,"conditions":"overcast clouds","icon":"04d"},
-          {"time":"19:00:00","temperature":70.29,"conditions":"overcast clouds","icon":"04d"},
-          {"time":"20:00:00","temperature":67.3,"conditions":"overcast clouds","icon":"04n"}]
-          }
-    }
-}
-```
-### POST http://localhost:3000/api/v1/users
+[Unsplash](https://unsplash.com/developers)
+
+### Setup
+
+Clone the repository and begin by running the following. (Please check below for correct environment versions.)
+
+`bundle install`
+
+Install Figaro:
+
+`bundle exec figaro install`
+
+You'll need to obtain api keys above and place them in your `config/application.yml` file:
 
 ```
-JSON raw body:
-{
-  "email": "you@example.com",
-  "password": "password",
-  "password_confirmation": "password"
-}
+mapquest_key: <YOUR KEY>
+open_weather_key: <YOUR KEY>
+unsplash_key: <YOUR KEY>
 ```
+
+Please also follow setup instructions for [Webmock](https://github.com/webmock/webmock) and [VCR](https://github.com/vcr/vcr).
+
+After all installations, run
+
+`rails s`
+
+to see your server working.
+
+
+### Endpoints
+
+#### Get forecast for a city
+
+`GET /api/v1/forecast?location=<CITY>`
+
+Example search:
+
+`GET /api/v1/forecast?location=Denver,CO`
+
+Example JSON response:
+
 ```
-Response:
 {
     "data": {
-        "id": "2",
-        "type": "users",
+        "id": null,
+        "type": "forecast",
         "attributes": {
-            "email": "you@example.com",
-            "api_key": "8a232e734270e093e960"
+            "current_weather": {
+                "datetime": "2021-11-16 18:54:42 -0700",
+                "sunrise": "2021-11-16 06:46:09 -0700",
+                "sunset": "2021-11-16 16:43:41 -0700",
+                "temperature": 55.74,
+                "feels_like": 52.2,
+                "humidity": 25,
+                "uvi": 0,
+                "visibility": 10000,
+                "conditions": "broken clouds",
+                "icon": "04n"
+            },
+            "daily_weather": [
+                {
+                    "date": "2021-11-16",
+                    "sunrise": "2021-11-16 06:46:09 -0700",
+                    "sunset": "2021-11-16 16:43:41 -0700",
+                    "max_temp": 68.11,
+                    "min_temp": 48.58,
+                    "conditions": "overcast clouds",
+                    "icon": "04d"
+                },
+                {
+                    "date": "2021-11-17",
+                    "sunrise": "2021-11-17 06:47:17 -0700",
+                    "sunset": "2021-11-17 16:42:57 -0700",
+                    "max_temp": 42.98,
+                    "min_temp": 34.63,
+                    "conditions": "broken clouds",
+                    "icon": "04d"
+                },
+                {
+                    "date": "2021-11-18",
+                    "sunrise": "2021-11-18 06:48:26 -0700",
+                    "sunset": "2021-11-18 16:42:16 -0700",
+                    "max_temp": 49.24,
+                    "min_temp": 32.27,
+                    "conditions": "clear sky",
+                    "icon": "01d"
+                },
+                {
+                    "date": "2021-11-19",
+                    "sunrise": "2021-11-19 06:49:34 -0700",
+                    "sunset": "2021-11-19 16:41:36 -0700",
+                    "max_temp": 61.65,
+                    "min_temp": 43.93,
+                    "conditions": "overcast clouds",
+                    "icon": "04d"
+                },
+                {
+                    "date": "2021-11-20",
+                    "sunrise": "2021-11-20 06:50:41 -0700",
+                    "sunset": "2021-11-20 16:40:58 -0700",
+                    "max_temp": 58.75,
+                    "min_temp": 44.8,
+                    "conditions": "overcast clouds",
+                    "icon": "04d"
+                }
+            ],
+            "hourly_weather": [
+                {
+                    "time": "18:00:00",
+                    "temperature": 56.34,
+                    "conditions": "broken clouds",
+                    "icon": "04n"
+                },
+                {
+                    "time": "19:00:00",
+                    "temperature": 55.74,
+                    "conditions": "broken clouds",
+                    "icon": "04n"
+                },
+                {
+                    "time": "20:00:00",
+                    "temperature": 55.65,
+                    "conditions": "broken clouds",
+                    "icon": "04n"
+                },
+                {
+                    "time": "21:00:00",
+                    "temperature": 54.72,
+                    "conditions": "scattered clouds",
+                    "icon": "03n"
+                },
+                {
+                    "time": "22:00:00",
+                    "temperature": 51.62,
+                    "conditions": "scattered clouds",
+                    "icon": "03n"
+                },
+                {
+                    "time": "23:00:00",
+                    "temperature": 48.58,
+                    "conditions": "scattered clouds",
+                    "icon": "03n"
+                },
+                {
+                    "time": "00:00:00",
+                    "temperature": 42.98,
+                    "conditions": "clear sky",
+                    "icon": "01n"
+                },
+                {
+                    "time": "01:00:00",
+                    "temperature": 39.74,
+                    "conditions": "clear sky",
+                    "icon": "01n"
+                }
+            ]
         }
     }
 }
 ```
-### POST http://localhost:3000/api/v1/users (sad path email taken) 
+
+#### Get a background image for a city
+
+`GET /api/v1/backgrounds?location=<CITY>`
+
+Example search:
+
+`GET /api/v1/backgrounds?location=denver,co`
+
+Example JSON response:
+
 ```
-JSON raw body: 
 {
-  "email": "you@example.com",
-  "password": "password",
-  "password_confirmation": "password"
-}
-```
-```
-Response:
-{
-    "status": 400,
-    "message": "Email has already been taken",
     "data": {
-        "email": [
-            "has already been taken"
-        ]
+        "id": null,
+        "type": "background",
+        "attributes": {
+            "location": "denver,co",
+            "url": "https://images.unsplash.com/photo-1634507307973-9df1b23f5701?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNzU2MDJ8MHwxfHNlYXJjaHwxfHxkZW52ZXIlMkNjb3xlbnwwfDB8fHwxNjM3MTE0Mjk0&ixlib=rb-1.2.1&q=85",
+            "credit": {
+                "source": "Unsplash",
+                "source_url": "https://unsplash.com/?utm_source=weather_sweater&utm_medium=referral",
+                "photographer": "Dillon Wanner",
+                "photographer_profile": "https://unsplash.com/@dillydallying?utm_source=weather_sweater&utm_medium=referral"
+            }
+        }
     }
 }
 ```
 
-## Development setup
-```ruby 2.7.4```
-```rails 5.2.6```
-## Gems
-![pry v badge](https://img.shields.io/gem/v/pry?color=blue&label=pry)
-![shoulda-matchers v badge](https://img.shields.io/gem/v/shoulda-matchers?label=shoulda-matchers)
-![rspec v badge](https://img.shields.io/gem/v/rspec?color=orange&label=rspec)
-![simplecov v badge](https://img.shields.io/gem/v/simplecov?color=green&label=simplecov)
-]![json-apiserializer](https://img.shields.io/badge/json-apiserializer-green)
+#### Register a user
+
+`POST /api/v1/users`
+
+Users can be posted via JSON body in your request:
+
+```
+{
+  "email": "user@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
+```
+
+Example JSON response:
+
+```
+{
+  "data": {
+    "id": "4",
+    "type": "users",
+    "attributes": {
+      "email": "user@example.com",
+      "api_key": "xxxxxxxxxxxxxxxxxxx"
+    }
+  }
+}
+```
+
+#### Login a user
+
+`POST /api/v1/sessions`
+
+Users can be posted via JSON body in your request:
+
+```
+{
+  "email": "user@example.com",
+  "password": "password"
+}
+```
+
+Example JSON Response:
+
+```
+{
+    "data": {
+        "id": "4",
+        "type": "users",
+        "attributes": {
+            "email": "user@example.com",
+            "api_key": "xxxxxxxxxxxxxxxxxx"
+        }
+    }
+}
+```
+
+
+#### Make a road trip
+
+`POST /api/v1/road_trip`
+
+Users can be posted via JSON body in your request:
+
+```
+{
+  "origin": "new york,ny",
+  "destination": "los angeles,ca",
+  "api_key": "xxxxxxxxxxxxxxxxxxxxx"
+}
+
+```
+
+Example JSON Response:
+
+```
+{
+    "data": {
+        "id": null,
+        "type": "road_trip",
+        "attributes": {
+            "start_city": "New York, NY",
+            "end_city": "Los Angeles, CA",
+            "travel_time": "40:16:00",
+            "weather_at_eta": {
+                "temperature": 65.16,
+                "conditions": "overcast clouds"
+            }
+        }
+    }
+}
+```
+
+### Technologies
+
+#### Versions
+- Ruby 2.7.2
+- Rails 5.2.5
+
+#### Development
+![Ruby on Rails][ruby-on-rails-badge]
+![Git][git-badge]
+![Atom][atom-badge]
+![Faraday][faraday-badge]
+![Figaro][figaro-badge]
+![Postico][postico-badge]
+![Postman][postman-badge]
+![Rubocop][rubocop-badge]
+
+#### Languages
+![Ruby][ruby-badge]
+![ActiveRecord][activerecord-badge]
+
+#### Testing
+![RSpec][rspec-badge]
+![Simplecov][simplecov-badge]
+![VCR][vcr-badge]
+![Webmock][webmock-badge]
+![Pry][pry-badge]
+![Capybara][capybara-badge]
+![Shoulda Matchers][shoulda-matchers-badge]
+
+#### Development Principles
+![OOP][oop-badge]
+![TDD][tdd-badge]
+![MVC][mvc-badge]
+![REST][rest-badge]
+
+
+### Contact me:
+[![LinkedIn][linkedin-badge]](https://www.linkedin.com/in/blake-dempsey/)
+[![GitHub][github-badge]](https://github.com/bdempsey864)
+
+
+
+<!-- Markdown link & img dfn's -->
+<!-- [travis-image]:           
+[travis-url]:              -->
+
+[linkedin-badge]:         https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+[github-badge]:           https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+
+[atom-badge]:             https://img.shields.io/badge/Atom-66595C.svg?&style=flaste&logo=atom&logoColor=white
+[bootstrap-badge]:        https://img.shields.io/badge/Bootstrap-563D7C?style=flat&logo=bootstrap&logoColor=white
+[figaro-badge]:           https://img.shields.io/badge/figaro-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[git-badge]:              https://img.shields.io/badge/Git-F05032.svg?&style=flaste&logo=git&logoColor=white
+[github-badge]:           https://img.shields.io/badge/GitHub-181717.svg?&style=flaste&logo=github&logoColor=white
+[markdown-badge]:         https://img.shields.io/badge/Markdown-000000?style=flat&logo=markdown&logoColor=white
+[postgreSQL-badge]:       https://img.shields.io/badge/PostgreSQL-4169E1.svg?&style=flaste&logo=postgresql&logoColor=white
+[postico-badge]:          https://img.shields.io/badge/postico-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[postman-badge]:          https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=Postman&logoColor=white
+[rubocop-badge]:          https://img.shields.io/badge/rubocop-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[ruby-on-rails-badge]:    https://img.shields.io/badge/Ruby%20On%20Rails-b81818.svg?&style=flat&logo=rubyonrails&logoColor=white
+
+<!-- Languages -->
+[activerecord-badge]:     https://img.shields.io/badge/ActiveRecord-CC0000.svg?&style=flaste&logo=rubyonrails&logoColor=white
+[css3-badge]:             https://img.shields.io/badge/CSS3-1572B6.svg?&style=flaste&logo=css3&logoColor=white
+[html5-badge]:            https://img.shields.io/badge/HTML5-0EB201.svg?&style=flaste&logo=html5&logoColor=white
+[ruby-badge]:             https://img.shields.io/badge/Ruby-CC0000.svg?&style=flaste&logo=ruby&logoColor=white
+
+<!-- Deployment -->
+[heroku-badge]:           https://img.shields.io/badge/Heroku-430098.svg?&style=flaste&logo=heroku&logoColor=white
+[travis-ci-badge]:        https://badgen.net/badge/icon/travis?icon=travis&label
+[faraday-badge]:          https://img.shields.io/badge/faraday-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+
+
+<!-- Testing -->
+[capybara-badge]:         https://img.shields.io/badge/capybara-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[launchy-badge]:          https://img.shields.io/badge/launchy-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[pry-badge]:              https://img.shields.io/badge/pry-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[rspec-badge]:            https://img.shields.io/badge/rspec-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[shoulda-matchers-badge]: https://img.shields.io/badge/shoulda--matchers-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[simplecov-badge]:        https://img.shields.io/badge/simplecov-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[vcr-badge]:              https://img.shields.io/badge/vcr-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+[webmock-badge]:          https://img.shields.io/badge/webmock-b81818.svg?&style=flaste&logo=rubygems&logoColor=white
+
+<!-- Development Principles -->
+[oop-badge]:              https://img.shields.io/badge/OOP-b81818.svg?&style=flaste&logo=OOP&logoColor=white
+[tdd-badge]:              https://img.shields.io/badge/TDD-b87818.svg?&style=flaste&logo=TDD&logoColor=white
+[mvc-badge]:              https://img.shields.io/badge/MVC-b8b018.svg?&style=flaste&logo=MVC&logoColor=white
+[rest-badge]:             https://img.shields.io/badge/REST-33b818.svg?&style=flaste&logo=REST&logoColor=white
